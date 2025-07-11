@@ -1,56 +1,36 @@
 /**
  * valmate - A flexible and lightweight Express middleware for validating incoming requests.
  *
- * Accepts an array of validation rule objects. Each object defines a `test` function
- * (which checks a condition on the `req` object), an optional `errorMessage`, and
- * an optional `statusCode`. If any test fails, the request is short-circuited with
- * a response containing the provided message and status.
- *
- * 🚨 This middleware includes safeguards to ensure it is used **only within**
- * a valid Express route (i.e., with `req`, `res`, `next`).
- *
- * ---
+ * Accepts an array of custom validation rules, each containing a test function, an optional
+ * error message, and an optional status code. It safely validates the request and sends back
+ * the appropriate error response if any rule fails. Includes runtime safeguards to prevent
+ * misuse outside of an Express route.
  *
  * @function
- * @param {Array<Object>} validations - An array of validation rule objects.
+ * @param {Array<{ test: Function, errorMessage: String, statusCode: Number }>} validations - Array of validation rule objects.
+ * @param {Function} validations[].test - A function that receives the Express `req` object and returns `true` if valid, otherwise `false` or `undefined`.
+ * @param {string} [validations[].errorMessage='Bad request'] - Custom error message to return if validation fails.
+ * @param {number} [validations[].statusCode=400] - HTTP status code to return if validation fails.
  *
- * Each object can contain:
- * @param {Function} validations[].test - Required. A function that receives the Express `req` object and returns `true` if valid, or `false`/`undefined` if invalid.
- * @param {string} [validations[].errorMessage='Bad request'] - Optional. Custom error message sent if validation fails.
- * @param {number} [validations[].statusCode=400] - Optional. HTTP status code sent if validation fails.
- *
- * @returns {Function} An Express middleware function `(req, res, next)` to be used in route definitions.
+ * @returns {Function} Express middleware function `(req, res, next)` to be used in route handlers.
  *
  * @throws {TypeError} If `validations` is not an array.
- * @throws {Error} If used outside of an Express route (missing or invalid `req`, `res`, or `next`).
- *
- * ---
+ * @throws {Error} If the middleware is not used in an Express route (missing `req`, `res`, or `next`).
  *
  * @example
- * import express from 'express';
  * import valmate from 'valmate';
- *
- * const app = express();
- * app.use(express.json());
- *
- * app.post('/signup',
+ * 
+ * app.post('/api/user',
  *   valmate([
- *     {
- *       test: req => !!req.body.username,
- *       errorMessage: 'Username is required',
- *       statusCode: 422
- *     },
- *     {
- *       test: req => req.body.password?.length >= 6,
- *       errorMessage: 'Password must be at least 6 characters'
- *     }
+ *     { test: (req) => !!req.body.username, errorMessage: 'Username is required', statusCode: 400 },
+ *     { test: (req) => req.body.email?.includes('@'), errorMessage: 'Valid email is required', statusCode:400 }
  *   ]),
  *   (req, res) => {
- *     res.status(200).send('Validation passed!');
+ *     res.send('Request is valid!');
  *   }
  * );
  */
-const valmate = (validations = [{ test: () => { }, errorMessage: String || 'Bad request', statusCode: Number || 400 }]) => {
+const valmate = (validations = [{ test: Function, errorMessage: String || 'Bad request', statusCode: Number || 400 }]) => {
     return ((req, res, next) => {
         try {
             if (!Array.isArray(validations)) {
