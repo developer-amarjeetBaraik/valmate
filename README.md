@@ -17,14 +17,14 @@ npm install valmate
 
 ```js
 import express from 'express';
-import validateRequest from 'valmate';
+import valmate from 'valmate';
 
 const app = express();
 app.use(express.json());
 
 app.post(
   '/api/user',
-  validateRequest([
+  valmate([
     {
       test: (req) => !!req.body.username,
       errorMessage: 'Username is required',
@@ -44,7 +44,7 @@ app.post(
 
 ## 🧰 API
 
-### `validateRequest(validations: Array)`
+### `valmate(validations: Array)`
 
 - **validations**: An array of objects:
   - `test(req)` — function that returns `true` if valid
@@ -68,7 +68,7 @@ Valmate automatically detects incorrect usage. If you try to use the middleware 
 ## ✅ Example with status codes
 
 ```js
-validateRequest([
+valmate([
   {
     test: (req) => req.body.token === 'secret',
     errorMessage: 'Unauthorized access',
