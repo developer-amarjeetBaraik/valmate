@@ -1,7 +1,7 @@
 
 # Valmate 🧪
 
-**Valmate** is a simple and flexible Express.js middleware to validate incoming requests using custom rule functions. It also includes safeguards to prevent incorrect usage outside of Express routes.
+**Valmate** is a safe, flexible, and lightweight Express.js middleware to validate incoming requests using simple custom rules. It also includes safeguards to prevent incorrect usage outside of Express route handlers.
 
 ---
 
@@ -46,27 +46,17 @@ app.post(
 
 ### `valmate(validations: Array)`
 
-- **validations**: An array of objects:
-  - `test(req)` — function that returns `true` if valid
-  - `errorMessage` — string message if validation fails (default: `"Bad request"`)
-  - `statusCode` — optional HTTP error code (default: `400`)
+| Field          | Type               | Required | Default         | Description                               |
+| -------------- | ------------------ | -------- | --------------- | ----------------------------------------- |
+| `test`         | `(req) => boolean` | ✅        | —               | Function that checks the request validity |
+| `errorMessage` | `string`           | ❌        | `'Bad request'` | Message to return if validation fails     |
+| `statusCode`   | `number`           | ❌        | `400`           | HTTP status to return if validation fails |
+
 
 Returns an Express middleware function `(req, res, next) => {}`
 
 ---
-
-## 🧪 Runtime Safeguards
-
-Valmate automatically detects incorrect usage. If you try to use the middleware outside of an Express route (e.g., call it directly), you'll see a clear error message like:
-
-```
-[valmate] Middleware must be used in an Express route. Check if you are calling it outside of Express context.
-```
-
----
-
-## ✅ Example with status codes
-
+## ✅ Example with Custom Status Code
 ```js
 valmate([
   {
@@ -75,20 +65,42 @@ valmate([
     statusCode: 401,
   },
 ]);
+
+```
+---
+
+## 🧪 Runtime Safeguards
+
+Valmate includes checks to make sure it’s used properly:
+
+✅ Throws if validations is not an array
+
+✅ Throws if used outside of an Express route handler
+
+✅ Logs a warning if a validation rule is missing or invalid
+
+You'll see helpful errors like:
+
+```
+[valmate] Middleware must be used in an Express route. Check if you are calling it outside of Express context.
 ```
 
 ---
 
 ## 💡 Why use Valmate?
 
-- ✅ Lightweight and framework-agnostic logic
-- ✅ Easy to plug into any Express route
-- ✅ Custom validations per route
-- ✅ Clear error messages and runtime protection
+
+- ⚡ Lightweight and dependency-free
+
+- 🧠 Simple rule-based logic
+
+- 🧱 Plug-and-play in Express routes
+
+- 🛡 Clear error messages and runtime protection
 
 ---
 
 ## 📄 License
 
 MIT License  
-© 2025 [Amarjeet Baraik](https://github.com/your-username)
+© 2025 [Amarjeet Baraik](https://github.com/developer-amarjeetBaraik)
