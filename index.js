@@ -30,7 +30,6 @@
  *   }
  * );
  */
-
 const valmate = (validations = [{ test: () => { }, errorMessage: String || 'Bad request', statusCode: Number || 400 }]) => {
     return ((req, res, next) => {
         try {
