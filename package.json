@@ -1,6 +1,6 @@
 {
   "name": "valmate",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A lightweight Express middleware for flexible request validation with custom rules.",
   "main": "index.js",
   "type": "module",
