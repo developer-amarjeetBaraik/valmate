@@ -1,0 +1,29 @@
+{
+  "name": "valmate",
+  "version": "1.0.0",
+  "description": "A lightweight Express middleware for flexible request validation with custom rules.",
+  "main": "index.js",
+  "type": "module",
+  "types": "index.d.ts",
+  "keywords": [
+    "express",
+    "middleware",
+    "validation",
+    "request-validation",
+    "validator",
+    "request-validator",
+    "request",
+    "express-middleware",
+    "valmate"
+  ],
+  "author": "Amarjeet Baraik",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/developer-amarjeetBaraik/valmate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/developer-amarjeetBaraik/valmate/issues"
+  },
+  "homepage": "https://github.com/developer-amarjeetBaraik/valmate#readme"
+}
